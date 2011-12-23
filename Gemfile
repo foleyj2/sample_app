@@ -13,9 +13,15 @@ end
 group :test do
       gem 'rspec-rails', '2.6.1'
       gem 'webrat', '0.7.1'
-     gem 'autotest', '4.4.6'
-     gem 'autotest-rails-pure', '4.1.2'
-     gem 'autotest-fsevent', '0.2.4'
-     gem 'autotest-growl', '0.2.16'
+#     gem 'autotest', '4.4.6'
+     gem 'autotest'
+#     gem 'autotest-rails-pure', '4.1.2'
+     gem 'autotest-rails-pure'
+### something is very wrong with ffi and fsevent
+#     gem 'autotest-fsevent', '0.2.4'
+#     gem 'autotest-fsevent'
+#     gem 'autotest-growl', '0.2.16'
+      ## Use 0.2.12 on pre-lion macs
+      gem 'autotest-growl', '0.2.12'
 end
 
