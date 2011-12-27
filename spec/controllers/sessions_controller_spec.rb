@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe SessionsController do
+  render_views  
+  # don't forget to render_views, or you will get weird DTD errors on the title checks
 
   describe "GET 'new'" do
     it "should be successful" do
@@ -52,9 +54,18 @@ describe SessionsController do
 
       it "should redirect to the user show page" do
         post :create, :session => @attr
-        response.should redirct_to(user_path(@user))
+        response.should redirect_to(user_path(@user))
       end
     end #valid email and password
   end #POST create
+
+  describe "DELETE 'destroy'" do
+    it "should sign a user out" do
+      test_sign_in(Factory(:user))
+      delete :destroy
+      controller.should_not be_signed_in
+      response.should redirect_to(root_path)
+    end
+  end
 
 end #SessionsController

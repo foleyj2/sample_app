@@ -24,4 +24,16 @@ RSpec.configure do |config|
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = true
+
+  ## added integration tests for user sign in --foley
+  ## exercises in 9.6
+  def test_sign_in(user)
+    controller.sign_in(user)
+  end
+
+#  def integration_sign_in(user)
+#    visit signin_path
+#    fill_in :email, :with => user.email
+#    fill_in :password, :with => user.password
+#  end
 end
