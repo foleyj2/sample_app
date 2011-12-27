@@ -9,7 +9,9 @@ module ApplicationHelper
     end
   end
 
+  #exercise 5.5.1
   def logo
     image_tag("logo.png", :alt => "Sample App", :class => "round")
   end
+
 end
