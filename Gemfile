@@ -31,4 +31,4 @@ group :test do
       ## Use 0.2.12 on pre-lion macs
       gem 'autotest-growl', '0.2.12'
       gem 'factory_girl_rails', '1.0'
-
+end
