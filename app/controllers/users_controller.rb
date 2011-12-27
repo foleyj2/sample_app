@@ -15,6 +15,9 @@ class UsersController < ApplicationController
       redirect_to @user
     else
       @title = "Sign up"
+      ## Exercise 8.6.2
+      ## Blank out the passwords on failure
+      @user.password = nil
       render 'new'
     end
   end
