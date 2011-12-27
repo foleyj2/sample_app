@@ -1,4 +1,3 @@
-require 'autotest/growl'
 # fsevent seems to cause problems
 #require 'autotest/fsevent'
 Autotest.add_hook :initalize do |autotest|

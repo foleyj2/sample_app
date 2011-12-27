@@ -1,4 +1,8 @@
 source 'http://rubygems.org'
+## update using
+## bundle install
+## then to setup bins
+## bundle install -binstubs
 
 gem 'rails', '3.0.11'
 gem 'sqlite3', '1.3.3'
@@ -20,11 +24,11 @@ group :test do
 #     gem 'autotest-rails-pure', '4.1.2'
      gem 'autotest-rails-pure'
 ### something is very wrong with ffi and fsevent
+### Can't find much information on the internet, aborting
 #     gem 'autotest-fsevent', '0.2.4'
 #     gem 'autotest-fsevent'
 #     gem 'autotest-growl', '0.2.16'
       ## Use 0.2.12 on pre-lion macs
       gem 'autotest-growl', '0.2.12'
       gem 'factory_girl_rails', '1.0'
-end
 
