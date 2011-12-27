@@ -34,43 +34,41 @@ class User < ActiveRecord::Base
     encrypted_password == encrypt(submitted_password)
   end
 
-#  def self.authenticate(email, submitted_password) #class method, Original
-#  ## User in place of self (Listing 7.27)
-#  #def User.authenticate(email,submitted_password)
-#    user = find_by_email(email)
-#    return nil if user.nil?
-#    return user if user.has_password?(submitted_password)
-#    ## Explicit third return (Listing 7.28)
-#    #return nil
-#  end
+  ## Exercises 7.5.1
+  #  def self.authenticate(email, submitted_password) #class method, Original
+  #  ## User in place of self (Listing 7.27)
+  #  #def User.authenticate(email,submitted_password)
+  #    user = find_by_email(email)
+  #    return nil if user.nil?
+  #    return user if user.has_password?(submitted_password)
+  #    ## Explicit third return (Listing 7.28)
+  #    #return nil
+  #  end
 
-## using if statement (Listing 7.29)
-#def self.authenticate(email, submitted_password)
-#  user = find_by_email(email)
-#  if user.nil?
-#    nil
-#  elsif user.has_password?(submitted_password)
-#    user
-#    # Explicit or implcit return (Listing 7.30)
-#    #  else
-#    #    nil
-#  end
-#end
+  ## using if statement (Listing 7.29)
+  #def self.authenticate(email, submitted_password)
+  #  user = find_by_email(email)
+  #  if user.nil?
+  #    nil
+  #  elsif user.has_password?(submitted_password)
+  #    user
+  #    # Explicit or implcit return (Listing 7.30)
+  #    #  else
+  #    #    nil
+  #  end
+  #end
 
-## Using ternary operator, most comact (Listing 7.31)
+  ## Using ternary operator, most comact (Listing 7.31)
+
   def self.authenticate(email, submitted_password)
     user = find_by_email(email)
     user && user.has_password?(submitted_password) ? user : nil
   end
 
-<<<<<<< .merge_file_4LrU2S
   def self.authenticate_with_salt(id, cookie_salt)
     user = find_by_id(id)
     (user && user.salt == cookie_salt) ? user : nil
   end
-=======
-
->>>>>>> .merge_file_Jhfn0f
 
   # start of private methods
   private
