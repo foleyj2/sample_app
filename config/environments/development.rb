@@ -1,4 +1,8 @@
 SampleApp::Application.configure do
+  ##http://collectiveidea.com/blog/archives/2010/11/29/ssl-with-rails/
+  require 'rack/ssl'
+  #config.middleware.user Rack::SSL
+
   # Settings specified here will take precedence over those in config/application.rb
 
   # In the development environment your application's code is reloaded on
@@ -22,5 +26,12 @@ SampleApp::Application.configure do
 
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
+
+  ## SSL
+  ## http://collectiveidea.com/blog/archives/2010/11/29/ssl-with-rails/
+  ## rails 3.x
+  config.middleware.insert_before ActionDispatch::Cookies, Rack::SSL
+  ## Rails 2.3.x
+  #config.middleware.insert_after ActionController::Failsafe, Rack::SSL
 end
 

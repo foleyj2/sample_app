@@ -1,6 +1,7 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
+require 'rack/ssl'
 
 # If you have a Gemfile, require the gems listed there, including any gems
 # you've limited to :test, :development, or :production.
@@ -8,6 +9,22 @@ Bundler.require(:default, Rails.env) if defined?(Bundler)
 
 module SampleApp
   class Application < Rails::Application
+    # allow SSL connections
+    # Exercise 9.6.3
+    # http://www.simonecarletti.com/blog/2011/05/configuring-rails-3-https-ssl/
+    ## SSL for rails <3.1
+    config.middleware.insert_before ActionDispatch::Static, "Rack::SSL"
+    ## This version allows both https and http
+    #config.middleware.insert_before ActionDispatch::Static, Rack::SSL, :exclude => proc { |env| env['HTTPS'] != 'on' }
+
+    # protect the cookies!
+    config.middleware.insert_before ActionDispatch::Cookies, Rack::SSL
+
+    
+    ## SSL for rails >=3.1
+    # http://www.simonecarletti.com/blog/2011/05/configuring-rails-3-https-ssl/
+    #config.force_ssl = true
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

@@ -1,6 +1,80 @@
 #!/usr/bin/env ruby
 # This command will automatically be run when you run "rails" with Rails 3 gems installed from the root of your application.
 
+## Exercise 9.6.3
+## Enabling SSL
+##http://www.nearinfinity.com/blogs/chris_rohr/configuring_webrick_to_use_ssl.html
+require 'rubygems'
+require 'rails/commands/server'
+require 'rack'
+require 'webrick'
+require 'webrick/https'
+
+## info on making a private key pair with self-signed cert
+## note that you need a better signature to get rid of warning messages
+## http://www.akadia.com/services/ssh_test_certificate.html
+
+## First go to the config directory
+## % openssl genrsa -des3 -out server.key 1024
+## password: rubyonrails
+
+## Generate a CSR
+## % openssl req -new -key server.key -out server.csr
+# Enter pass phrase for server.key:
+# You are about to be asked to enter information that will be incorporated
+# into your certificate request.
+# What you are about to enter is what is called a Distinguished Name or a DN.
+# There are quite a few fields but you can leave some blank
+# For some fields there will be a default value,
+# If you enter '.', the field will be left blank.
+# -----
+# Country Name (2 letter code) [AU]:IS
+# State or Province Name (full name) [Some-State]:Reykjavik
+# Locality Name (eg, city) []:Reykjavik
+# Organization Name (eg, company) [Internet Widgits Pty Ltd]:Reykjavik University
+# Organizational Unit Name (eg, section) []:Information Technology
+# Common Name (eg, YOUR name) []:localhost
+# Email Address []:foley at ru dot is
+
+# Please enter the following 'extra' attributes
+# to be sent with your certificate request
+# A challenge password []:
+# An optional company name []:
+
+## Remove the password
+## % openssl rsa -in server.key.org -out server.key
+
+## Self-signed cert
+## % openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
+# Signature ok
+#subject=/C=IS/ST=Reykjavik/L=Reykjavik/O=Reykjavik University/OU=Information Technology/CN=localhost/emailAddress=foley at ru dot is
+#Getting Private key
+
+
+module Rails
+    class Server < ::Rack::Server
+        def default_options
+            super.merge({
+                #:Port => 3000,  ## rails default
+                :Port => 443, ## ssl default, needs sudo!
+                :environment => (ENV['RAILS_ENV'] || "development").dup,
+                :daemonize => false,
+                :debugger => false,
+                :pid => File.expand_path("tmp/pids/server.pid"),
+                :config => File.expand_path("config.ru"),
+                :SSLEnable => true,
+                :SSLVerifyClient => OpenSSL::SSL::VERIFY_NONE,
+                :SSLPrivateKey => OpenSSL::PKey::RSA.new(
+                       File.open(File.expand_path("config/server.key")).read),
+                :SSLCertificate => OpenSSL::X509::Certificate.new(
+                       File.open(File.expand_path("config/server.crt")).read),                                           
+                       #File.open("/tmp/rails.crt").read),
+                :SSLCertName => [["IS", WEBrick::Utils::getservername]]
+            })
+        end
+    end
+end
+
 APP_PATH = File.expand_path('../../config/application',  __FILE__)
 require File.expand_path('../../config/boot',  __FILE__)
 require 'rails/commands'

@@ -11,6 +11,10 @@ gem 'gravatar_image_tag', '1.0.0.pre2'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 gem 'heroku'
+      # allow SSL connections
+      # Exercise 9.6.3
+      #http://www.simonecarletti.com/blog/2011/05/configuring-rails-3-https-ssl/
+      gem 'rack-ssl', :require => 'rack/ssl'
 
 group :development do
       gem 'rspec-rails', '2.6.1'
