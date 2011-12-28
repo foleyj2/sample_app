@@ -1,3 +1,4 @@
+# -*- Ruby -*- 
 source 'http://rubygems.org'
 ## update using
 ## bundle install
@@ -17,8 +18,9 @@ gem 'heroku'
       gem 'rack-ssl', :require => 'rack/ssl'
 
 group :development do
-      gem 'rspec-rails', '2.6.1'
-      gem 'annotate', '2.4.0'
+      gem 'rspec-rails', '2.6.1'  # rspec tester
+      gem 'annotate', '2.4.0' # shows DB schema in comments
+      gem 'faker', '0.3.1' # makes realistic fake users Listing (10.24)
 end
 group :test do
       gem 'rspec-rails', '2.6.1'
