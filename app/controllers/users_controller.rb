@@ -2,11 +2,13 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @title = @user.name
-  end
+  end #show
+
   def new
     @user = User.new
     @title = "Sign up"
-  end
+  end #new
+
   def create
     @user = User.new(params[:user])
     if @user.save
@@ -20,5 +22,11 @@ class UsersController < ApplicationController
       @user.password = nil
       render 'new'
     end
-  end
+  end #create
+
+  def edit
+    @user = User.find(params[:id])
+    @title = "Edit user"
+  end #edit
+
 end

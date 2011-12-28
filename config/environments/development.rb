@@ -1,6 +1,6 @@
 SampleApp::Application.configure do
   ##http://collectiveidea.com/blog/archives/2010/11/29/ssl-with-rails/
-  require 'rack/ssl'
+  #require 'rack/ssl'
   #config.middleware.user Rack::SSL
 
   # Settings specified here will take precedence over those in config/application.rb
@@ -30,7 +30,7 @@ SampleApp::Application.configure do
   ## SSL
   ## http://collectiveidea.com/blog/archives/2010/11/29/ssl-with-rails/
   ## rails 3.x
-  config.middleware.insert_before ActionDispatch::Cookies, Rack::SSL
+  #config.middleware.insert_before ActionDispatch::Cookies, Rack::SSL
   ## Rails 2.3.x
   #config.middleware.insert_after ActionController::Failsafe, Rack::SSL
 end

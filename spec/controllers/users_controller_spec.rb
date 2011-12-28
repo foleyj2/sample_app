@@ -69,7 +69,7 @@ describe UsersController do
       response.should have_selector("input[name='user[password_confirmation]'][type='password']")
     end
 
-  end
+  end # Get 'new'
 
   describe "POST 'create'" do
     describe "failure" do
@@ -126,7 +126,31 @@ describe UsersController do
         controller.should be_signed_in
       end
 
-    end #end success
+    end # success
  
-  end
+  end # Post 'create'
+
+  describe "GET 'edit'" do
+    before(:each) do
+      @user = Factory(:user)
+      test_sign_in(@user)
+    end
+
+    it "should be successful" do
+      get :edit, :id => @user
+      response.should be_success
+    end
+
+    it "should have the right title" do
+      get :edit, :id => @user
+      response.should have_selector("title", :content => "Edit user")
+    end
+    
+    it "should have a link to change the Gravator" do
+      get :edit, :id => @user
+      gravatar_url = "http://gravatar.com/emails" #weird, but true
+      response.should have_selector("a", :href => gravatar_url,
+                                   :content => "change")
+    end
+  end # GET 'edit'
 end
