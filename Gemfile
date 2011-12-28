@@ -19,23 +19,22 @@ gem 'heroku'
       gem 'rack-ssl', :require => 'rack/ssl'
 
 group :development do
-      gem 'rspec-rails', '2.6.1'  # rspec tester
-      gem 'annotate', '2.4.0' # shows DB schema in comments
-      gem 'faker', '0.3.1' # makes realistic fake users Listing (10.24)
+  gem 'rspec-rails', '2.6.1'  # rspec tester
+  gem 'watchr' # autotest replacement
+  gem 'annotate', '2.4.0' # shows DB schema in comments
+  gem 'faker', '0.3.1' # makes realistic fake users Listing (10.24)
 end
 group :test do
-      gem 'rspec-rails', '2.6.1'
-      gem 'webrat', '0.7.1'
-#     gem 'autotest', '4.4.6'
-     gem 'autotest'
-#     gem 'autotest-rails-pure', '4.1.2'
-     gem 'autotest-rails-pure'
-### something is very wrong with ffi and fsevent
-### Can't find much information on the internet, aborting
-#     gem 'autotest-fsevent', '0.2.4'
-#     gem 'autotest-fsevent'
-#     gem 'autotest-growl', '0.2.16'
-      ## Use 0.2.12 on pre-lion macs
-      gem 'autotest-growl', '0.2.12'
-      gem 'factory_girl_rails', '1.0'
+  gem 'rspec-rails', '2.6.1'
+  gem 'watchr'
+  gem 'webrat', '0.7.1'
+  ##gem 'autotest'
+  ##gem 'autotest-rails-pure'
+  ### something is very wrong with ffi and fsevent
+  ### Can't find much information on the internet, aborting
+  #     gem 'autotest-fsevent', '0.2.4'
+  ## Use autotest-growl 0.2.12 on pre-lion macs
+  #gem 'autotest-growl', '0.2.12'
+  gem 'spork', '0.9.0.rc8'
+  gem 'factory_girl_rails', '1.0'
 end

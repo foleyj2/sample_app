@@ -12,7 +12,7 @@
 class User < ActiveRecord::Base
   attr_accessor :password
   attr_accessible :name, :email, :password, :password_confirmation
-
+ 
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
   # commented out to ensure a red test
@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
   validates :email, :presence => true,
   :format => {:with => email_regex},
   :uniqueness => { :case_sensitive => false }
-  
+   
   #Automagically create the virtual attribute 'password_confirmation'
   validates :password, :presence => true,
   :confirmation => true,
