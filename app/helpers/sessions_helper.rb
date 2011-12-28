@@ -40,6 +40,10 @@ module SessionsHelper
     !current_user.nil?
   end
 
+  def current_user?(user) #listing 10.15
+    user == current_user
+  end
+
   def deny_access #Listing 10.12
     redirect_to signin_path, :notice => "Please sign in to access this page."
   end

@@ -221,5 +221,22 @@ describe UsersController do
       end
     end # non-signed-in users
 
+    describe "for signed-in users" do #listing 10.13
+      before(:each) do
+        wrong_user = Factory(:user, :email => "user@example.net")
+        test_sign_in(wrong_user)
+      end
+
+      it "should require matching users for 'edit'" do
+        get :edit, :id => @user
+        response.should redirect_to(root_path)
+      end
+
+      it "should require matching users for 'update'" do
+        put :update, :id => @user, :user => {}
+        response.should redirect_to(root_path)
+      end
+    end #signed-in users
+
   end # authentication of edit/update pages
 end
