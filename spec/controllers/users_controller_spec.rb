@@ -21,6 +21,11 @@ describe UsersController do
         third = Factory(:user, :name => "Ben", :email => "another@example.net")
         
         @users = [@user, second, third]
+        # Listing 10.30 for additional 30 users
+        30.times do
+          @users << Factory(:user, :name => Factory.next(:name),
+                            :email => Factory.next(:email))
+        end
       end
 
       it "should be successfu" do
@@ -35,9 +40,19 @@ describe UsersController do
 
       it "should have an element for each user" do
         get :index
-        @users.each do |user|
+        @users[0..2].each do |user|
           response.should have_selector("li", :content => user.name)
         end
+      end
+
+      it "should paginate users" do #Listing 10.30
+        get :index
+        response.should have_selector("div.pagination")
+        response.should have_selector("span.disabled", :content => "Previous")
+        response.should have_selector("a", :href => "/users?page=2",
+                                      :content => "2")
+        response.should have_selector("a", :href => "/users?page=2",
+                                      :content => "Next")
       end
     end # signed-in-users
         
@@ -66,7 +81,7 @@ describe UsersController do
       response.should have_selector("title", :content => @user.name)
     end
 
-    it "should inlude the user's name" do
+    it "should include the user's name" do
       get :show, :id => @user
       response.should have_selector("h1", :content => @user.name)
     end
