@@ -34,7 +34,7 @@ describe "LayoutLinks" do
                                      :content => "Sign in")
     end
   end #not signed in
-
+  ## this user needs to be created
   describe "when signed in" do
     before(:each) do
       @user = Factory(:user)

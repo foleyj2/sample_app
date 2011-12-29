@@ -21,7 +21,7 @@ Spork.prefork do
   # Requires supporting ruby files with custom matchers and macros, etc,
   # in spec/support/ and its subdirectories.
   Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
-  
+
   RSpec.configure do |config|
   # == Mock Framework
     #
@@ -40,6 +40,9 @@ Spork.prefork do
   # instead of true.
     config.use_transactional_fixtures = true
 
+  end
+end
+
   ## added integration tests for user sign in --foley
   ## exercises in 9.6
     def test_sign_in(user)
@@ -52,8 +55,6 @@ Spork.prefork do
       fill_in :email, :with => user.email
       fill_in :password, :with => user.password
     end
-  end
-end
 
 Spork.each_run do
   # This code will be run each time you run your specs.
