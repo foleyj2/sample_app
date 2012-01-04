@@ -5,9 +5,11 @@ SampleApp::Application.configure do
   # test suite.  You never need to work with it otherwise.  Remember that
   # your test database is "scratch space" for the test suite and is wiped
   # and recreated between test runs.  Don't rely on the data there!
-  #config.cache_classes = true
+  config.cache_classes = true
   # http://www.rubyinside.com/how-to-rails-3-and-rspec-2-4336.html
-  config.cache_classes = false  # so spork gets new models
+  # WARNING: This breaks many of the Integration tests due to modification
+  # of the test database.  Do not use!
+  #config.cache_classes = false  # so spork gets new models
 
   # Log error messages when you accidentally call methods on nil.
   config.whiny_nils = true
