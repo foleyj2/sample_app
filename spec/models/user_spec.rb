@@ -13,9 +13,9 @@ require 'spec_helper'
 
 describe User do
   before(:each) do
-    @attr = { 
-      :name => "Example user", 
-      :email => "user@example.com",
+    @attr = {
+      :name => "Example user testy",
+      :email => "testy@example.com",
       :password => "foobar",
       :password_confirmation => "foobar"
     }
@@ -96,10 +96,10 @@ describe User do
     end
   end
   describe "password encryption" do
-    before(:each) do 
+    before(:each) do
         @user = User.create!(@attr)
     end
-    
+
     it "should have an encrypted password attribute" do
       @user.should respond_to(:encrypted_password)
     end
@@ -107,19 +107,19 @@ describe User do
     it "should set the encrypted password" do
       @user.encrypted_password.should_not be_blank
     end
-    
+
     describe "has_password? method" do
       it "should be true if the passwords match" do
         @user.has_password?(@attr[:password]).should be_true
       end
-      
+
       it "should be false if the passwords don't match" do
         @user.has_password?("invalid").should be_false
       end
     end
-    
-    describe "autheticate method" do
-      
+
+    describe "authenticate method" do
+
       it "should return nil on email/password mismatch" do
         wrong_password_user = User.authenticate(@attr[:email], "wrongpass")
         wrong_password_user.should be_nil
@@ -134,6 +134,28 @@ describe User do
         matching_user = User.authenticate(@attr[:email], @attr[:password])
         matching_user.should == @user
       end
+    end #authenticate method
+  end # password encryption
+
+  describe "admin attribute" do
+
+    before(:each) do
+      @user = User.create!(@attr)
     end
-  end
+
+    it "should respond to admin" do
+      @user.should respond_to(:admin)
+    end
+
+    it "should not be an admin by default" do
+      @user.should_not be_admin
+    end
+
+    it "should be convertible to an admin" do
+      @user.toggle!(:admin)
+      @user.should be_admin
+    end
+  end #admin attribute
 end
+
+

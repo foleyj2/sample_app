@@ -1,24 +1,19 @@
 require 'spec_helper'
+# bundle exec rake db:test:prepare
+# to clear out test modifications
+
 
 describe "Users" do
-#  describe "GET /users" do
-#    it "works! (now write some real specs)" do
-#      # Run the generator again with the --webrat flag if you want to use we#brat methods/matchers
-#      get users_index_path
-#      response.status.should be(200)
-#    end
-#  end
-
   describe "signup" do
-    
+
     describe "failure" do
 
       it "should not make a new user" do
         lambda do
           visit signup_path
-          fill_in :name, :with => ""
-          fill_in :email, :with => ""
-          fill_in :password, :with => ""
+          fill_in "Name", :with => ""
+          fill_in "Email", :with => ""
+          fill_in "Password", :with => ""
           fill_in "Confirmation", :with => ""
           click_button
           response.should render_template('users/new')
@@ -28,13 +23,12 @@ describe "Users" do
     end #failure
 
     describe "success" do
-
       it "should make a new user" do
         lambda do
           visit signup_path
-          fill_in :name, :with => "Example User"
-          fill_in :email, :with => "user@example.com"
-          fill_in :password, :with => "foobar"
+          fill_in "Name", :with => "Signup User"
+          fill_in "Email", :with => "signupuser@example.com"
+          fill_in "Password", :with => "foobar"
           fill_in "Confirmation", :with => "foobar"
           click_button
           response.should have_selector("div.flash.success",
@@ -42,7 +36,7 @@ describe "Users" do
           response.should render_template('users/show')
         end.should change(User, :count).by(1)
       end
-    end #failure
+    end #success
 
   end #signup
 
@@ -58,6 +52,7 @@ describe "Users" do
   end #sign in/out
 
   describe "success" do
+    # this user should already exist
     it "should sign a user in and out" do
       user = Factory(:user)
       # Exercises 9.6.1

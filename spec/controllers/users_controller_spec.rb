@@ -4,7 +4,7 @@ describe UsersController do
   render_views
 
   describe "GET 'index'" do
-    
+
     describe "for non-signed-in users" do
       it "should deny access" do
         get :index
@@ -14,12 +14,12 @@ describe UsersController do
     end #non-signed-in users
 
     describe "for signed-in users" do
-      
+
       before(:each) do
         @user = test_sign_in(Factory(:user))
-        second = Factory(:user, :name => "Bob", :email => "another@example.com")
-        third = Factory(:user, :name => "Ben", :email => "another@example.net")
-        
+        second = Factory(:user, :name => "Bob", :email => "second@example.com")
+        third = Factory(:user, :name => "Ben", :email => "third@example.net")
+
         @users = [@user, second, third]
         # Listing 10.30 for additional 30 users
         30.times do
@@ -55,7 +55,7 @@ describe UsersController do
                                       :content => "Next")
       end
     end # signed-in-users
-        
+
   end #GET 'index'
 
   #def show
@@ -65,7 +65,7 @@ describe UsersController do
     before(:each) do
       @user = Factory(:user)
     end
-    
+
     it "should be successful" do
       get :show, :id => @user
       response.should be_success
@@ -75,7 +75,7 @@ describe UsersController do
       get :show, :id => @user
       assigns(:user).should == @user
     end
-    
+
     it "should have the right title" do
       get :show, :id => @user
       response.should have_selector("title", :content => @user.name)
@@ -85,7 +85,7 @@ describe UsersController do
       get :show, :id => @user
       response.should have_selector("h1", :content => @user.name)
     end
-    
+
     it "should have a profile image" do
       get :show, :id => @user
       response.should have_selector("h1>img", :class => "gravatar")
@@ -98,7 +98,7 @@ describe UsersController do
       get :new
       response.should be_success
     end
-    
+
     it "should have the right title" do
       get :new
       response.should have_selector("title", :content => "Sign up")
@@ -128,7 +128,7 @@ describe UsersController do
 
   describe "POST 'create'" do
     describe "failure" do
-      
+
       before(:each) do
         @attr = { :name => "", :email => "", :password => "",
           :password_confirmation => "" }
@@ -139,7 +139,7 @@ describe UsersController do
           post :create, :user => @attr
           end.should_not change(User, :count)
       end
-      
+
       it "should have the right title" do
         post :create, :user => @attr
         response.should have_selector("title", :content => "Sign up")
@@ -149,13 +149,14 @@ describe UsersController do
         post :create, :user => @attr
         response.should render_template('new')
       end
- 
+
    end #failure
 
     describe "success" do
-      
+
       before(:each) do
-        @attr = { :name => "New User", :email => "user@example.com", 
+        # now that we populate the database, this has to not exist!
+        @attr = { :name => "New User", :email => "postcreate@example.com",
           :password => "foobar",
           :password_confirmation => "foobar" }
       end
@@ -182,7 +183,7 @@ describe UsersController do
       end
 
     end # success
- 
+
   end # Post 'create'
 
   describe "GET 'edit'" do
@@ -200,7 +201,7 @@ describe UsersController do
       get :edit, :id => @user
       response.should have_selector("title", :content => "Edit user")
     end
-    
+
     it "should have a link to change the Gravator" do
       get :edit, :id => @user
       gravatar_url = "http://gravatar.com/emails" #weird, but true
@@ -220,7 +221,7 @@ describe UsersController do
         @attr = { :email => "", :name => "", :password => "",
           :password_confirmation => "" }
       end
-      
+
       it "should render the 'edit' page" do
         put :update, :id => @user, :user => @attr
         response.should render_template('edit')
@@ -254,7 +255,7 @@ describe UsersController do
         put :update, :id => @user, :user => @attr
         flash[:success].should =~ /updated/
       end
-      
+
     end #success
 
   end # PUT 'update'
@@ -263,7 +264,7 @@ describe UsersController do
     before(:each) do
       @user = Factory(:user)
     end
-    
+
     describe "for non-signed-in users" do
       it "should deny access to 'edit'" do
         get :edit, :id => @user
@@ -278,7 +279,7 @@ describe UsersController do
 
     describe "for signed-in users" do #listing 10.13
       before(:each) do
-        wrong_user = Factory(:user, :email => "user@example.net")
+        wrong_user = Factory(:user, :email => "wronguser@example.net")
         test_sign_in(wrong_user)
       end
 
@@ -294,4 +295,44 @@ describe UsersController do
     end #signed-in users
 
   end # authentication of edit/update pages
+
+    describe "DELETE 'destroy'" do
+      before(:each) do
+        @user = Factory(:user)
+      end
+
+      describe "as a non-signed-in user" do
+        it "should deny access" do
+          delete :destroy, :id => @user
+          response.should redirect_to(signin_path)
+          end
+        end
+
+      describe "as a non-admin user" do
+        it "should protect the page" do
+          test_sign_in(@user)
+          delete :destroy, :id => @user
+          response.should redirect_to(root_path)
+        end
+      end
+
+      describe "as an admin user" do
+        before(:each) do
+          admin = Factory(:user, :email => "admin@example.com", :admin => true)
+          test_sign_in(admin)
+        end
+
+        it "should destroy the user" do
+          lambda do
+            delete :destroy, :id => @user
+          end.should change(User, :count).by(-1)
+        end
+
+        it "should redirect to the users page" do
+          delete :destroy, :id => @user
+          response.should redirect_to(users_path)
+        end
+      end # as an admin user
+    end # DELETE 'destroy'
+
 end
