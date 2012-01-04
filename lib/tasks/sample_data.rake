@@ -4,8 +4,6 @@ namespace :db do
   desc "Fill database with sample data"
   task :populate => :environment do  # get access to rails env
     Rake::Task['db:reset'].invoke
-    # also rest the test db, this might not be the right thing to do
-    Rake::Task['db:test:prepare'].invoke
     admin = User.create(:name => "Example User",
                 :email => "example@railstutorial.org",
                 :password => "foobar",
